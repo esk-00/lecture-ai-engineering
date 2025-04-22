@@ -78,4 +78,8 @@ elif st.session_state.page == "サンプルデータ管理":
 
 # --- フッターなど（任意） ---
 st.sidebar.markdown("---")
+<<<<<<< HEAD
 st.sidebar.info("開発者: [SATO Eisuke]")
+=======
+st.sidebar.info("開発者: [Your Name]")
+>>>>>>> 88d275c862b58d02f21ec5ae37b2ee7788103977
