@@ -30,14 +30,12 @@ def load_model():
     """LLMモデルをロードする"""
     try:
         device = "cuda" if torch.cuda.is_available() else "cpu"
-        st.info(f"Using device: {device}") # 使用デバイスを表示
         pipe = pipeline(
             "text-generation",
             model=MODEL_NAME,
             model_kwargs={"torch_dtype": torch.bfloat16},
             device=device
         )
-        st.success(f"モデル '{MODEL_NAME}' の読み込みに成功しました。")
         return pipe
     except Exception as e:
         st.error(f"モデル '{MODEL_NAME}' の読み込みに失敗しました: {e}")
@@ -58,9 +56,9 @@ if 'page' not in st.session_state:
 
 page = st.sidebar.radio(
     "ページ選択",
-    ["チャット", "履歴閲覧", "サンプルデータ管理"],
+    ["チャット", "履歴閲覧", "サンプルデータ管理", "システム情報"],
     key="page_selector",
-    index=["チャット", "履歴閲覧", "サンプルデータ管理"].index(st.session_state.page), # 現在のページを選択状態にする
+    index=["チャット", "履歴閲覧", "サンプルデータ管理", "システム情報"].index(st.session_state.page), # 現在のページを選択状態にする
     on_change=lambda: setattr(st.session_state, 'page', st.session_state.page_selector) # 選択変更時に状態を更新
 )
 
@@ -75,6 +73,8 @@ elif st.session_state.page == "履歴閲覧":
     ui.display_history_page()
 elif st.session_state.page == "サンプルデータ管理":
     ui.display_data_page()
+elif st.session_state.page == "システム情報":
+    ui.display_system_page() 
 
 # --- フッターなど（任意） ---
 st.sidebar.markdown("---")

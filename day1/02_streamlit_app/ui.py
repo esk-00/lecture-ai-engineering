@@ -2,10 +2,12 @@
 import streamlit as st
 import pandas as pd
 import time
+import torch
 from database import save_to_db, get_chat_history, get_db_count, clear_db
 from llm import generate_response
 from data import create_sample_evaluation_data
 from metrics import get_metrics_descriptions
+from config import MODEL_NAME
 
 # --- チャットページのUI ---
 def display_chat_page(pipe):
@@ -289,3 +291,9 @@ def display_data_page():
     for metric, description in metrics_info.items():
         with st.expander(f"{metric}"):
             st.write(description)
+
+# --- システム情報ページのUI ---
+def display_system_page():
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    st.info(f"Using device: {device}") # 使用デバイスを表示
+    st.success(f"モデル '{MODEL_NAME}' の読み込みに成功しました。")
