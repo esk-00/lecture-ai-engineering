@@ -1,5 +1,3 @@
-import gc
-import psutil
 from kedro.io import MemoryDataset, KedroDataCatalog
 from kedro.pipeline import Pipeline, node
 from kedro.runner import SequentialRunner
@@ -177,21 +175,3 @@ if __name__ == "__main__":
         logger.info("パイプラインの実行が完了しました。")
     except Exception as e:
         logger.error(f"パイプラインの実行中にエラーが発生しました: {str(e)}")
-
-def test_model_memory_usage(train_model):
-    """モデルのメモリ使用量を検証"""
-    model, X_test, _ = train_model
-    
-    process = psutil.Process(os.getpid())
-    gc.collect()
-    
-    memory_before = process.memory_info().rss / (1024 * 1024)
-    model.predict(X_test)
-    memory_after = process.memory_info().rss / (1024 * 1024)
-    
-    memory_used = memory_after - memory_before
-    
-    memory_threshold = 100
-    
-    print(f"メモリ使用量: {memory_used:.2f} MB")
-    assert memory_used < memory_threshold, f"メモリ使用量が多すぎます: {memory_used:.2f} MB (閾値: {memory_threshold} MB)"
